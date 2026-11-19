@@ -1,0 +1,106 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vehicle Details</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='vehicle_details.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+
+    <nav class="nav-home">
+        <a href="{{ url_for('home') }}" class="logo">CarListings</a>
+
+        <div class="home-links">
+            <a href="{{ url_for('buy') }}">Buy</a>
+            <a href="{{ url_for('sell') }}">Sell</a>
+            <a href="{{ url_for('contact') }}">Contact</a>
+        </div>
+    </nav>
+
+    <div class="container">
+
+        <h1>{{ vehicle[3] }} {{ vehicle[2] }} {{ vehicle[4] }}</h1>
+
+        <p class="price">KSH {{ "{:,.2f}".format(vehicle[5]) }}</p>
+
+        <h2>Vehicle Pictures</h2>
+
+        <section class="gallery">
+
+            {% for image in images %}
+
+            <div class="gallery-item">
+                <img src="{{ url_for('static', filename=image[0]) }}"
+                     alt="{{ image[1] }} picture">
+
+                <p>{{ image[1]|upper }}</p>
+            </div>
+
+            {% else %}
+
+            <p>No pictures available.</p>
+
+            {% endfor %}
+
+        </section>
+
+        <section class="details">
+
+            <h2>Vehicle Information</h2>
+
+            <div class="detail-item">
+                <strong>Make:</strong>
+                <span>{{ vehicle[2] }}</span>
+            </div>
+
+            <div class="detail-item">
+                <strong>Model:</strong>
+                <span>{{ vehicle[3] }}</span>
+            </div>
+
+            <div class="detail-item">
+                <strong>Year:</strong>
+                <span>{{ vehicle[4] }}</span>
+            </div>
+
+            <div class="detail-item">
+                <strong>Price:</strong>
+                <span>KSH {{ "{:,.2f}".format(vehicle[5]) }}</span>
+            </div>
+
+        </section>
+
+        <section class="seller">
+
+            <h2>Seller Information</h2>
+
+            {% if seller %}
+
+                <p><strong>Name:</strong> {{ seller[1] }}</p>
+
+                {% if seller[3] %}
+                    <p><strong>Phone:</strong> {{ seller[3] }}</p>
+                {% endif %}
+
+            {% else %}
+
+                <p>Seller information unavailable.</p>
+
+            {% endif %}
+
+        </section>
+
+        <a href="{{ url_for('buy') }}" class="back">Back to Vehicles</a>
+
+    </div>
+
+</body>
+</html>

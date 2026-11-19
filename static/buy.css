@@ -113,18 +113,21 @@
   .display{
       margin: 2rem;
   }
-  .car1, .car2, .car3, .car4{
-      margin-top: 1.5rem;
-      background-color: #ffffff;
-      border-radius: 0.3rem;
-  }
+  .car-card {
+    margin-top: 1.5rem;
+    background-color: #ffffff;
+    border-radius: 0.3rem;
+    overflow: hidden;
+}
   .car-image{
       border-radius: 0.3rem;
   }
-  .car-image img{
-      width: 100%;
-      border-radius: 0.3rem;
-  }
+  .car-image img {
+    width: 100%;
+    height: 230px;
+    object-fit: cover;
+    border-radius: 0.3rem;
+}
   .brand{
       font-weight: 700;
       font-size: 20px;
@@ -201,3 +204,33 @@
       }
   
   }
+
+  /* added by Leshan */
+  .no-image {
+    width: 100%;
+    height: 230px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--neutral-color);
+    color: grey;
+}
+
+.no-image i {
+    font-size: 40px;
+    margin-bottom: 10px;
+}
+
+.empty-message {
+    text-align: center;
+    padding: 2rem;
+}
+
+/* view details button */
+.view {
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+}

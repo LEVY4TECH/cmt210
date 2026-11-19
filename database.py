@@ -11,13 +11,38 @@ conn = psycopg2.connect(
 cur = conn.cursor()
 
 def insert_vehicles(values):
-    insert = "insert into vehicles(seller_id, make, model, year)values(%s, %s, %s, %s)"
+    insert = "insert into vehicles(seller_id, make, model, year, price)values(%s, %s, %s, %s, %s) RETURNING vehicle_id"
     cur.execute(insert, values)
+    vehicle_id = cur.fetchone()[0]
     conn.commit()
+    return vehicle_id
     
+# def fetch_vehicles():
+#     cur.execute("select * from vehicles;")
+#     vehicles = cur.fetchall()
+#     return vehicles
+
 def fetch_vehicles():
-    cur.execute("select * from vehicles;")
+    query = """
+        SELECT
+            v.vehicle_id,
+            v.make,
+            v.model,
+            v.year,
+            v.price,
+            (
+                SELECT vi.image_url
+                FROM vehicle_images vi
+                WHERE vi.vehicle_id = v.vehicle_id
+                AND vi.image_type = 'front'
+                LIMIT 1
+            ) AS front_image
+        FROM vehicles v;
+    """
+
+    cur.execute(query)
     vehicles = cur.fetchall()
+
     return vehicles
 
 def fetch_vehicle(vehicle_id):
@@ -31,13 +56,22 @@ def update_vehicles(values):
     conn.commit()
 
 def insert_vehicle_images(values):
-    insert = "insert into vehcile_images(vehicle_id, image_url, created_at)values(%s, %s, now())"
+    insert = "insert into vehicle_images(vehicle_id, image_url, image_type)values(%s, %s, %s)"
     cur.execute(insert, values)
     conn.commit()
     
-def fetch_vehicle_images():
-    cur.execute("select * from vehicle_images;")
+
+
+def fetch_vehicle_images(vehicle_id):
+    query = """
+        SELECT image_url, image_type
+        FROM vehicle_images
+        WHERE vehicle_id = %s
+    """
+
+    cur.execute(query, (vehicle_id,))
     vehicle_images = cur.fetchall()
+
     return vehicle_images
 
 def insert_purchases(values):
@@ -51,7 +85,7 @@ def fetch_purchases():
     return purchases
 
 def insert_user(values):
-    insert="insert into users(full_name, email, phone, password, role, created_at)values(%s, %s, %s, %s, %s, %s)"
+    insert="insert into users(full_name, email, phone, password, role)values(%s, %s, %s, %s, %s)"
     cur.execute(insert,values)
     conn.commit()
 

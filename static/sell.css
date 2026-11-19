@@ -74,19 +74,36 @@
       font-weight: 600;
       border-radius: 0.3rem;
   }
-  .attachments .parts div{
-      border: 1px dashed grey;
-      background-color: #ffffff;
-      display: flex;
-      flex-direction: column;
-      text-align: center;
-      flex: 1;
-      border-radius: 0.2rem;
-      margin: 0.5rem;
-      padding: 1rem;
-      cursor: pointer;
-      min-width: 200px;
-  }
+  .attachments .parts .upload-box {
+    border: 1px dashed grey;
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    flex: 1;
+    border-radius: 0.2rem;
+    margin: 0.5rem;
+    padding: 1rem;
+    cursor: pointer;
+    min-width: 200px;
+}
+
+.upload-box:hover {
+    border-color: var(--secondary-color);
+    background-color: var(--secondary-light);
+}
+
+.upload-box input[type="file"] {
+    display: none;
+}
+
+.upload-box .file-name {
+    font-size: 11px;
+    font-weight: 400;
+    color: #777;
+    margin-top: 8px;
+}
   .car-details{
       background-color: var(--secondary-light);
       border: 1px solid var(--neutral-color);

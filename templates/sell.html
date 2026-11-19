@@ -1,106 +1,157 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sell</title>
-    <link rel="stylesheet" href="/css/sell.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='sell.css') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body>
     <main>
         <nav class="nav-home">
             <a href="javascript:void(0);" class="hamburger-menu" onclick="toggle()">
                 <i class="fa fa-bars"></i>
             </a>
-            <a href="/html/login.html" class="logo">CarListings</a>
+            <a href="{{ url_for('home') }}" class="logo">CarListings</a>
             <div class="home-links" id="links">
-                <a href="/html/buy.html">Buy</a>
-                <a href="/html/sell.html">Sell</a>
-                <a href="/html/contact.html">Contact</a>
-                <a href="/html/login.html">Logout</a>
+                <a href="{{ url_for('buy') }}">Buy</a>
+                <a href="{{ url_for('sell') }}">Sell</a>
+                <a href="{{ url_for('contact') }}">Contact</a>
+                <a href="{{ url_for('register') }}">Register</a>
+                <a href="{{ url_for('login') }}">Login</a>
             </div>
         </nav>
 
+
         <div class="container">
             <h1>Need To Sell Your Vehicle?</h1>
-            <section class="attachments">
-                <p class="upload">UPLOAD IMAGES</p>
-                <div class="parts">
-                    <div class="front">
-                        <i class="fa fa-upload"></i>
-                        <p>FRONT</p>
+
+            <form action="{{ url_for('add_vehicle') }}" method="POST" enctype="multipart/form-data">
+
+                <section class="attachments">
+                    <p class="upload">UPLOAD IMAGES</p>
+
+                    <div class="parts">
+
+                        <label class="upload-box" for="front_image">
+                            <i class="fa fa-upload"></i>
+                            <p>FRONT</p>
+                            <span class="file-name">Choose image</span>
+                            <input type="file" id="front_image" name="front_image" accept="image/*" required>
+                        </label>
+
+                        <label class="upload-box" for="rear_image">
+                            <i class="fa fa-upload"></i>
+                            <p>REAR</p>
+                            <span class="file-name">Choose image</span>
+                            <input type="file" id="rear_image" name="rear_image" accept="image/*">
+                        </label>
+
+                        <label class="upload-box" for="left_image">
+                            <i class="fa fa-upload"></i>
+                            <p>LEFT-SIDE</p>
+                            <span class="file-name">Choose image</span>
+                            <input type="file" id="left_image" name="left_image" accept="image/*">
+                        </label>
+
+                        <label class="upload-box" for="right_image">
+                            <i class="fa fa-upload"></i>
+                            <p>RIGHT-SIDE</p>
+                            <span class="file-name">Choose image</span>
+                            <input type="file" id="right_image" name="right_image" accept="image/*">
+                        </label>
+
+                        <label class="upload-box" for="engine_image">
+                            <i class="fa fa-upload"></i>
+                            <p>ENGINE</p>
+                            <span class="file-name">Choose image</span>
+                            <input type="file" id="engine_image" name="engine_image" accept="image/*">
+                        </label>
+
+                        <label class="upload-box" for="boot_image">
+                            <i class="fa fa-upload"></i>
+                            <p>BOOT</p>
+                            <span class="file-name">Choose image</span>
+                            <input type="file" id="boot_image" name="boot_image" accept="image/*">
+                        </label>
+
                     </div>
-                    <div class="rear">
-                        <i class="fa fa-upload"></i>
-                        <p>REAR</p>
-                    </div>
-                    <div class="left-side">
-                        <i class="fa fa-upload"></i>
-                    <p>LEFT-SIDE</p>
-                    </div>
-                    <div class="right-side">
-                        <i class="fa fa-upload"></i>
-                        <p>RIGHT-SIDE</p>
-                    </div>
-                    <div class="engine">
-                        <i class="fa fa-upload"></i>
-                        <p>ENGINE</p>
-                    </div>
-                    <div class="boot">
-                        <i class="fa fa-upload"></i>
-                        <p>BOOT</p>
-                    </div>
-                </div>
-            </section>
-            <section class="car-details">
-                <p>VEHICLE DETAILS</p>
-                <div class="filter-by">
-                    <div class="search-filter">
-                        <label for="Make">MAKE</label>
-                        <div class="select-wrapper">
-                            <select name="" id="make">
-                                <option value="">Select Make</option>
-                            </select>
+                </section>
+
+                <section class="car-details">
+                    <p>VEHICLE DETAILS</p>
+
+                    <div class="filter-by">
+
+                        <div class="search-filter">
+                            <label for="make">MAKE</label>
+                            <div class="select-wrapper">
+                                <input type="text" id="make" name="make" placeholder="e.g. Toyota" required>
+                            </div>
                         </div>
-                    </div>
-                
-                    <div class="search-filter">
-                        <label for="Model">MODEL</label>
-                        <div class="select-wrapper">
-                            <select name="" id="make">
-                                <option value="">eg. 3 Series/Corolla</option>
-                            </select>
+
+                        <div class="search-filter">
+                            <label for="model">MODEL</label>
+                            <div class="select-wrapper">
+                                <input type="text" id="model" name="model" placeholder="e.g. Corolla" required>
+                            </div>
                         </div>
-                    </div>
-                    
-                    <div class="search-filter">
-                        <label for="Year">YEAR</label>
-                        <div class="select-wrapper">
-                            <select name="" id="make">
-                                <option value="">Select Year</option>
-                            </select>
+
+                        <div class="search-filter">
+                            <label for="year">YEAR</label>
+                            <div class="select-wrapper">
+                                <input type="number" id="year" name="year" placeholder="e.g. 2022" required>
+                            </div>
                         </div>
-                    </div> 
-                </div>    
-                <div class="submit">
-                    <button>SUBMIT</button>
-                </div>
-            </section>
+
+                        <div class="search-filter">
+                            <label for="price">PRICE (KSH)</label>
+                            <div class="select-wrapper">
+                                <input type="number" id="price" name="price" placeholder="e.g. 2500000" min="1"
+                                    step="0.01" required>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="submit">
+                        <button type="submit">SUBMIT</button>
+                    </div>
+                </section>
+
+            </form>
         </div>
+
     </main>
     <script>
         function toggle() {
-        let x = document.getElementById("links");
-        if (x.style.display === "block") {
-            x.style.display = "none";
-        } else {
-            x.style.display = "block";
+            let x = document.getElementById("links");
+            if (x.style.display === "block") {
+                x.style.display = "none";
+            } else {
+                x.style.display = "block";
+            }
         }
-        }
+
+        // added by Leshan
+        document.querySelectorAll('.upload-box input').forEach(input => {
+            input.addEventListener('change', function () {
+                let fileName = this.files[0]
+                    ? this.files[0].name
+                    : "Choose image";
+
+                this.parentElement.querySelector('.file-name').textContent = fileName;
+            });
+        });
     </script>
 </body>
+
 </html>
