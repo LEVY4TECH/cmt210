@@ -4,7 +4,7 @@ from werkzeug.utils import secure_filename
 
 from flask import Flask, render_template, redirect, url_for, session,flash, request
 
-from database import insert_vehicles, fetch_vehicle, fetch_vehicles, update_vehicles, insert_vehicle_images, fetch_vehicle_images, insert_purchases, fetch_purchases,insert_user, fetch_user, check_user
+from database import insert_vehicles, fetch_vehicle, fetch_vehicles, insert_vehicle_images, fetch_vehicle_images, insert_user, fetch_user, check_user
 
 from flask_bcrypt import Bcrypt
 
@@ -46,8 +46,7 @@ def vehicle_details(vehicle_id):
 def sell():
     return render_template("sell.html")
 
-
-
+# UPLOADING A VEHICLE IN THE SELL'S PAGE
 @app.route("/add_vehicles", methods=['GET', 'POST'])
 def add_vehicle():
 
@@ -138,11 +137,12 @@ def add_vehicle():
          
 
      
-    
+# CONTACT PAGE ROUTE
 @app.route("/contact")
 def contact():
     return render_template('contact.html')
 
+# REGISTER ROUTE
 @app.route('/register', methods = ['GET', 'POST'])
 def register():
     if request.method == 'POST':

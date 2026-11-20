@@ -17,10 +17,7 @@ def insert_vehicles(values):
     conn.commit()
     return vehicle_id
     
-# def fetch_vehicles():
-#     cur.execute("select * from vehicles;")
-#     vehicles = cur.fetchall()
-#     return vehicles
+
 
 def fetch_vehicles():
     query = """
@@ -51,9 +48,6 @@ def fetch_vehicle(vehicle_id):
     vehicle = cur.fetchone()
     return vehicle
     
-def update_vehicles(values):
-    cur.execute("update vehicles set make = %s, model = %s, year = %s where vehicle_id = %s", values)
-    conn.commit()
 
 def insert_vehicle_images(values):
     insert = "insert into vehicle_images(vehicle_id, image_url, image_type)values(%s, %s, %s)"
