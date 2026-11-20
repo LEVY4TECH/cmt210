@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,9 +8,12 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body>
     <main>
         <nav class="nav-home">
@@ -35,52 +39,80 @@
         </section>
 
         <section class="search">
+
             <h2>Search Your Preferred Car</h2>
-            <p>Filter by certified make, model and vintage</p><hr>
-            <div class="filter-by">
-                <div class="search-filter">
-                    <label for="Make">MAKE</label>
-                    <div class="select-wrapper">
-                        <select name="" id="make">
-                            <option value="">Select Make</option>
-                        </select>
+            <p>Filter by certified make, model and vintage</p>
+            <hr>
+
+            <form action="{{ url_for('buy') }}" method="GET">
+
+                <div class="filter-by">
+
+                    <div class="search-filter">
+                        <label for="home-make">MAKE</label>
+                        <div class="select-wrapper">
+                            <select name="make" id="home-make">
+                                <option value="">Select Make</option>
+
+                                {% for make in makes %}
+                                <option value="{{ make }}">{{ make }}</option>
+                                {% endfor %}
+
+                            </select>
+                        </div>
                     </div>
-                </div>
-                
-                <div class="search-filter">
-                    <label for="Model">MODEL</label>
-                    <div class="select-wrapper">
-                        <select name="" id="make">
-                            <option value="">Select Model</option>
-                        </select>
+
+                    <div class="search-filter">
+                        <label for="home-model">MODEL</label>
+                        <div class="select-wrapper">
+                            <select name="model" id="home-model">
+                                <option value="">Select Model</option>
+
+                                {% for model in models %}
+                                <option value="{{ model }}">{{ model }}</option>
+                                {% endfor %}
+
+                            </select>
+                        </div>
                     </div>
-                </div>
-                
-                <div class="search-filter">
-                    <label for="Year">YEAR</label>
-                    <div class="select-wrapper">
-                        <select name="" id="make">
-                            <option value="">Select Model</option>
-                        </select>
+
+                    <div class="search-filter">
+                        <label for="home-year">YEAR</label>
+                        <div class="select-wrapper">
+                            <select name="year" id="home-year">
+                                <option value="">Select Year</option>
+
+                                {% for year in years %}
+                                <option value="{{ year }}">{{ year }}</option>
+                                {% endfor %}
+
+                            </select>
+                        </div>
                     </div>
+
                 </div>
-            </div>
-            <div class="matches-container">
-                <p>Over 100+ different cars to choose from. Your next dream ride is our priority.</p>
-                <button class="matches-btn">FIND MATCHES</button> 
-            </div>
+
+                <div class="matches-container">
+                    <p>Over 100+ different cars to choose from. Your next dream ride is our priority.</p>
+                    <button type="submit" class="matches-btn">FIND MATCHES</button>
+                </div>
+
+            </form>
+
         </section>
-        
+
+
     </main>
     <script>
         function toggle() {
-        let x = document.getElementById("links");
-        if (x.style.display === "block") {
-            x.style.display = "none";
-        } else {
-            x.style.display = "block";
-        }
+            let x = document.getElementById("links");
+            if (x.style.display === "block") {
+                x.style.display = "none";
+            } else {
+                x.style.display = "block";
+            }
         }
     </script>
 </body>
+
 </html>

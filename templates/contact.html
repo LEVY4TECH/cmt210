@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us | CarListings</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='contact.css') }}">
+</head>
+<body>
+
+    <header>
+        <nav class="nav-home">
+            <a href="javascript:void(0);" class="hamburger-menu" onclick="toggle()">
+                <i class="fa fa-bars"></i>
+            </a>
+            <a href="{{ url_for('home') }}" class="logo">CarListings</a>
+            <div class="home-links" id="links">
+                <a href="{{ url_for('buy') }}">Buy</a>
+                <a href="{{ url_for('sell') }}">Sell</a>
+                <a href="{{ url_for('contact') }}">Contact</a>
+                <a href="{{ url_for('register') }}">Register</a>
+                <a href="{{ url_for('login') }}">Login</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="contact-container">
+
+        <div class="contact-info">
+            <h1>We'd Love to Hear From You</h1>
+            <p>
+                Your opinion matters to us. Share your experience,
+                rate our services and help us improve CarListings.
+            </p>
+        </div>
+
+        <div class="feedback-form">
+
+            <h2>Send Us Your Feedback</h2>
+
+            {% with messages = get_flashed_messages() %}
+                {% for message in messages %}
+                    <p class="notification">{{ message }}</p>
+                {% endfor %}
+            {% endwith %}
+
+            <form action="{{ url_for('contact') }}" method="POST">
+
+                <label>Full Name</label>
+                <input type="text" name="full_name" required>
+
+                <label>Email Address</label>
+                <input type="email" name="email" required>
+
+                <label>Rate Our Services</label>
+                <select name="rating" required>
+                    <option value="">Select Rating</option>
+                    <option value="5">5 - Excellent</option>
+                    <option value="4">4 - Very Good</option>
+                    <option value="3">3 - Good</option>
+                    <option value="2">2 - Fair</option>
+                    <option value="1">1 - Poor</option>
+                </select>
+
+                <label>Subject (Optional)</label>
+                <input type="text" name="subject">
+
+                <label>Your Feedback</label>
+                <textarea name="message" rows="5" required></textarea>
+
+                <button type="submit">Submit Feedback</button>
+
+            </form>
+
+        </div>
+
+    </main>
+
+</body>
+</html>

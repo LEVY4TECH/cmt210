@@ -47,6 +47,62 @@ def fetch_vehicle(vehicle_id):
     cur.execute(query, (vehicle_id,))
     vehicle = cur.fetchone()
     return vehicle
+
+def fetch_vehicle_options():
+
+    cur.execute("SELECT DISTINCT make FROM vehicles ORDER BY make;")
+    makes = [row[0] for row in cur.fetchall()]
+
+    cur.execute("SELECT DISTINCT model FROM vehicles ORDER BY model;")
+    models = [row[0] for row in cur.fetchall()]
+
+    cur.execute("SELECT DISTINCT year FROM vehicles ORDER BY year DESC;")
+    years = [row[0] for row in cur.fetchall()]
+
+    return makes, models, years
+
+
+def search_vehicles(make=None, model=None, year=None):
+
+    query = """
+        SELECT
+            v.vehicle_id,
+            v.make,
+            v.model,
+            v.year,
+            v.price,
+            (
+                SELECT vi.image_url
+                FROM vehicle_images vi
+                WHERE vi.vehicle_id = v.vehicle_id
+                AND vi.image_type = 'front'
+                LIMIT 1
+            ) AS front_image
+        FROM vehicles v
+    """
+
+    conditions = []
+    values = []
+
+    if make:
+        conditions.append("v.make = %s")
+        values.append(make)
+
+    if model:
+        conditions.append("v.model = %s")
+        values.append(model)
+
+    if year:
+        conditions.append("v.year = %s")
+        values.append(year)
+
+    if conditions:
+        query += " WHERE " + " AND ".join(conditions)
+
+    cur.execute(query, tuple(values))
+    vehicles = cur.fetchall()
+
+    return vehicles
     
 
 def insert_vehicle_images(values):
@@ -90,7 +146,18 @@ def fetch_user(user_id):
     return user
 
 def check_user(email):
-    query="select * from users where email = %s"
-    cur.execute(query,(email,))
-    user=cur.fetchone()
+    query = "SELECT * FROM users WHERE LOWER(email) = %s"
+    cur.execute(query, (email.strip().lower(),))
+    user = cur.fetchone()
     return user
+
+def insert_feedback(values):
+
+    query = """
+        INSERT INTO feedback
+        (full_name, email, rating, subject, message)
+        VALUES (%s, %s, %s, %s, %s);
+    """
+
+    cur.execute(query, values)
+    conn.commit()

@@ -34,39 +34,70 @@
             <h1>Buy Your Next Ride</h1>
             <p>Discover luxury and comfort tailored just for you.</p>
             <section class="car-details">
-                <div class="filter-by">
-                    <div class="search-filter">
-                        <label for="Make">MAKE</label>
-                        <div class="select-wrapper">
-                            <select name="" id="make">
-                                <option value="">All Makes</option>
-                            </select>
+
+                <form action="{{ url_for('buy') }}" method="GET">
+
+                    <div class="filter-by">
+
+                        <div class="search-filter">
+                            <label for="make">MAKE</label>
+                            <div class="select-wrapper">
+                                <select name="make" id="make">
+                                    <option value="">All Makes</option>
+
+                                    {% for make in makes %}
+                                    <option value="{{ make }}" {% if selected_make==make %}selected{% endif %}>
+                                        {{ make }}
+                                    </option>
+                                    {% endfor %}
+
+                                </select>
+                            </div>
                         </div>
+
+                        <div class="search-filter">
+                            <label for="model">MODEL</label>
+                            <div class="select-wrapper">
+                                <select name="model" id="model">
+                                    <option value="">All Models</option>
+
+                                    {% for model in models %}
+                                    <option value="{{ model }}" {% if selected_model==model %}selected{% endif %}>
+                                        {{ model }}
+                                    </option>
+                                    {% endfor %}
+
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="search-filter">
+                            <label for="year">YEAR</label>
+                            <div class="select-wrapper">
+                                <select name="year" id="year">
+                                    <option value="">All Years</option>
+
+                                    {% for year in years %}
+                                    <option value="{{ year }}" {% if selected_year==year|string %}selected{% endif %}>
+                                        {{ year }}
+                                    </option>
+                                    {% endfor %}
+
+                                </select>
+                            </div>
+                        </div>
+
                     </div>
 
-                    <div class="search-filter">
-                        <label for="Model">MODEL</label>
-                        <div class="select-wrapper">
-                            <select name="" id="make">
-                                <option value="">All Models</option>
-                            </select>
-                        </div>
+                    <div class="submit">
+                        <button type="submit">Search Inventory</button>
                     </div>
 
-                    <div class="search-filter">
-                        <label for="Year">YEAR</label>
-                        <div class="select-wrapper">
-                            <select name="" id="make">
-                                <option value="">All Years</option>
-                            </select>
-                        </div>
-                    </div>
+                </form>
 
-                </div>
-                <div class="submit">
-                    <button>Search Inventory</button>
-                </div>
             </section>
+
+
         </div>
 
         <div class="verified-text">

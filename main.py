@@ -4,23 +4,64 @@ from werkzeug.utils import secure_filename
 
 from flask import Flask, render_template, redirect, url_for, session,flash, request
 
-from database import insert_vehicles, fetch_vehicle, fetch_vehicles, insert_vehicle_images, fetch_vehicle_images, insert_user, fetch_user, check_user
+from database import insert_vehicles, fetch_vehicle, fetch_vehicles, insert_vehicle_images, fetch_vehicle_images, insert_user, fetch_user, check_user, fetch_vehicle_options, search_vehicles, insert_feedback
 
 from flask_bcrypt import Bcrypt
 
+from flask_mail import Mail, Message
+
 app = Flask(__name__)
+
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USE_SSL'] = False
+
+app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME')
+app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
+app.config['MAIL_DEFAULT_SENDER'] = 'levy4tech@gmail.com'
+
+mail = Mail(app)
+
 app.secret_key = "hdwsbdbewhdb"
 
 bcrypt = Bcrypt(app)
 
 @app.route("/")
 def home():
-    return render_template('home.html')
+
+    makes, models, years = fetch_vehicle_options()
+
+    return render_template(
+        'home.html',
+        makes=makes,
+        models=models,
+        years=years
+    )
 
 @app.route("/buy")
 def buy():
-    vehicles = fetch_vehicles()
-    return render_template("buy.html", vehicles = vehicles)
+
+    make = request.args.get('make', '').strip()
+    model = request.args.get('model', '').strip()
+    year = request.args.get('year', '').strip()
+
+    year_filter = int(year) if year.isdigit() else None
+
+    vehicles = search_vehicles(make, model, year_filter)
+
+    makes, models, years = fetch_vehicle_options()
+
+    return render_template(
+        "buy.html",
+        vehicles=vehicles,
+        makes=makes,
+        models=models,
+        years=years,
+        selected_make=make,
+        selected_model=model,
+        selected_year=year
+    )
 
 @app.route('/vehicle/<int:vehicle_id>')
 def vehicle_details(vehicle_id):
@@ -138,31 +179,105 @@ def add_vehicle():
 
      
 # CONTACT PAGE ROUTE
-@app.route("/contact")
+@app.route('/contact', methods=['GET', 'POST'])
 def contact():
+
+    if request.method == 'POST':
+
+        full_name = request.form.get('full_name', '').strip()
+        email = request.form.get('email', '').strip()
+        rating = request.form.get('rating', '')
+        subject = request.form.get('subject', '').strip()
+        message = request.form.get('message', '').strip()
+
+        if not full_name or not email or not rating or not message:
+            flash("Please fill in all required fields.")
+            return redirect(url_for('contact'))
+
+        try:
+            rating = int(rating)
+
+            if rating < 1 or rating > 5:
+                flash("Please select a rating between 1 and 5.")
+                return redirect(url_for('contact'))
+
+        except ValueError:
+            flash("Invalid rating selected.")
+            return redirect(url_for('contact'))
+
+        values = (full_name, email, rating, subject, message)
+
+        insert_feedback(values)
+
+        flash("Thank you! Your feedback has been submitted.")
+        return redirect(url_for('contact'))
+
     return render_template('contact.html')
 
 # REGISTER ROUTE
-@app.route('/register', methods = ['GET', 'POST'])
+@app.route('/register', methods=['GET', 'POST'])
 def register():
+
     if request.method == 'POST':
+
         full_name = request.form['name']
-        email = request.form['email']
+        email = request.form['email'].strip().lower()
         phone = request.form['phone']
         password = request.form['pass']
         role = request.form['role']
-        
+
         hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
+
         user = check_user(email)
-        
-        if not user:
-            new_user = (full_name, email, phone,hashed_password, role)
+
+        if user:
+            flash("Email already registered. Please log in.", "error")
+            return redirect(url_for('login'))
+
+        try:
+            new_user = (full_name, email, phone, hashed_password, role)
             insert_user(new_user)
+
+            try:
+                msg = Message(
+                    subject="Welcome to CarListings!",
+                    recipients=[email]
+                )
+
+                msg.body = f"""
+Hello {full_name},
+
+Welcome to CarListings!
+
+Your account has been successfully created.
+
+You can now log in and explore the vehicles listed on our platform.
+
+Thank you for joining CarListings.
+
+Best regards,
+CarListings Team
+                """
+
+                mail.send(msg)
+
+                flash("Account created successfully! Confirmation email sent.", "success")
+
+            except Exception:
+                app.logger.exception("Email sending failed.")
+                flash("Account created, but confirmation email could not be sent.", "warning")
+
             return redirect(url_for('login'))
-        else:
-            flash("Already Registered, Please Log in", "error")
-            return redirect(url_for('login'))
+
+        except Exception:
+            app.logger.exception("Registration failed.")
+            flash("Registration could not be completed. Please try again.", "error")
+            return redirect(url_for('register'))
+
     return render_template('register.html')
+   
+
+
 
 @app.route("/login", methods = ['GET', 'POST'])
 def login():
