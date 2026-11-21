@@ -9,9 +9,6 @@ body {
     font-family: Arial, sans-serif;
     background: #f2f5f2;
     min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
 .register-container {
@@ -94,5 +91,88 @@ button:hover {
     .register-container {
         width: 90%;
         padding: 25px;
+    }
+}
+
+/* Flash messages */
+.alert {
+    padding: 12px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+}
+
+.alert-success {
+    background: #d4edda;
+    color: #155724;
+}
+
+.alert-error,
+.alert-danger {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.alert-warning {
+    background: #fff3cd;
+    color: #856404;
+}
+
+/* Navbar */
+.nav-home {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--neutral-color);
+    padding: 15px 30px;
+    width: 100%;
+}
+
+.nav-home .logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+.home-links {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.home-links a {
+    color: var(--primary-color);
+    text-decoration: none;
+    padding: 8px 12px;
+    transition: 0.3s;
+}
+
+.home-links a:hover {
+    background-color: var(--tertiary-color);
+    color: var(--neutral-color);
+    border-radius: 5px;
+}
+
+/* Center the registration form only */
+.register-page {
+    min-height: calc(100vh - 60px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px 0;
+}
+
+/* Small screens */
+@media (max-width: 600px) {
+    .nav-home {
+        flex-direction: column;
+        gap: 12px;
+        padding: 15px;
+    }
+
+    .home-links {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 5px;
     }
 }

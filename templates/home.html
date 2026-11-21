@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,34 +6,42 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
+
     <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
     <link
         href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
         rel="stylesheet">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
 <body>
+
+    <!-- Navbar -->
+    <nav class="nav-home">
+        <a href="{{ url_for('home') }}" class="logo">CarListings</a>
+
+        <div class="home-links">
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('buy') }}">Buy</a>
+            <a href="{{ url_for('sell') }}">Sell</a>
+            <a href="{{ url_for('contact') }}">Contact</a>
+            <a href="{{ url_for('register') }}">Register</a>
+            <a href="{{ url_for('login') }}">Login</a>
+        </div>
+    </nav>
+
     <main>
-        <nav class="nav-home">
-            <a href="javascript:void(0);" class="hamburger-menu" onclick="toggle()">
-                <i class="fa fa-bars"></i>
-            </a>
-            <a href="{{ url_for('home') }}" class="logo">CarListings</a>
-            <div class="home-links" id="links">
-                <a href="{{ url_for('buy') }}">Buy</a>
-                <a href="{{ url_for('sell') }}">Sell</a>
-                <a href="{{ url_for('contact') }}">Contact</a>
-                <a href="{{ url_for('register') }}">Register</a>
-                <a href="{{ url_for('login') }}">Login</a>
-            </div>
-        </nav>
 
         <section class="browse">
             <h2 class="find-ride">FIND YOUR NEXT RIDE</h2>
+
             <p class="find-text">Find the right vehicle for your journey</p>
+
             <button class="browse-btn">
                 BROWSE ALL VEHICLES
             </button>
@@ -41,7 +50,9 @@
         <section class="search">
 
             <h2>Search Your Preferred Car</h2>
+
             <p>Filter by certified make, model and vintage</p>
+
             <hr>
 
             <form action="{{ url_for('buy') }}" method="GET">
@@ -50,6 +61,7 @@
 
                     <div class="search-filter">
                         <label for="home-make">MAKE</label>
+
                         <div class="select-wrapper">
                             <select name="make" id="home-make">
                                 <option value="">Select Make</option>
@@ -64,6 +76,7 @@
 
                     <div class="search-filter">
                         <label for="home-model">MODEL</label>
+
                         <div class="select-wrapper">
                             <select name="model" id="home-model">
                                 <option value="">Select Model</option>
@@ -78,6 +91,7 @@
 
                     <div class="search-filter">
                         <label for="home-year">YEAR</label>
+
                         <div class="select-wrapper">
                             <select name="year" id="home-year">
                                 <option value="">Select Year</option>
@@ -94,25 +108,18 @@
 
                 <div class="matches-container">
                     <p>Over 100+ different cars to choose from. Your next dream ride is our priority.</p>
-                    <button type="submit" class="matches-btn">FIND MATCHES</button>
+
+                    <button type="submit" class="matches-btn">
+                        FIND MATCHES
+                    </button>
                 </div>
 
             </form>
 
         </section>
 
-
     </main>
-    <script>
-        function toggle() {
-            let x = document.getElementById("links");
-            if (x.style.display === "block") {
-                x.style.display = "none";
-            } else {
-                x.style.display = "block";
-            }
-        }
-    </script>
+
 </body>
 
 </html>

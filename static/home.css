@@ -1,203 +1,238 @@
+
 :root {
     --primary-color: #171b1f;
     --secondary-color: #c5a46d;
-    --secondary-faded: #c5a56dc0; 
+    --secondary-faded: #c5a56dc0;
     --secondary-light: #f3eada51;
     --tertiary-color: #254b49;
     --neutral-color: #f6f4ef;
-  }
-  
-  * {
+}
+
+* {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-  }
-  
-  body{
-      font-family: DM Sans;
-      color: var(--primary-color);
-      background-color: var(--secondary-light);
-  }
-  .nav-home{
-      overflow: hidden;
-      background-color: var(--neutral-color);
-      padding: 15px;
-      width: 100%;
-      position: relative;
-  }
-  .nav-home a{
-      color: var(--primary-color);
-  }
-  .hamburger-menu{
-      margin: 0 1rem 0 0;
-      width: 30px; 
-      cursor: pointer;
-      padding: 5px;
-      border-radius: 0.2rem;
-  }
-  .home-links{
-      display: none;
-  }
-  .home-links a{
-      padding: 10px;
-      display: block;
-  }
-  a:hover{
-      background-color: var(--tertiary-color);
-      transition: 0.3s;
-      color: var(--neutral-color);
-  }
-  
-  .find-ride{
-      margin-top: 0;
-      font-size: 25px;
-      padding: 10px 0 0 0;
-      font-size: 40px;
-  }
-  p{
-      margin: 0 0 1rem 0;
-  }
-  .nav-home a{
-      text-decoration: none;
-  }
-  .nav-home .logo{
-      font-weight: 700;
-      padding: 5px;
-      border-radius: 0.2rem;
-  }
-  
-  /* Browse section */
-  .browse{
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      margin: 1.2rem;
-      padding: 1rem 1.5rem;
-  }
-  .browse-btn{
-      margin-bottom: 15px;
-      width: 50%;
-      font-size: 15px;
-      padding: 0.8rem 0.5rem;
-      background-color: var(--primary-color);
-      color: var(--neutral-color);
-      font-weight: 500;
-      border: none;
-      border-radius: 0.4rem;
-      cursor: pointer;
-  }
-  .browse img{
-      width: 100%;
-      border-radius: 0.5rem;
-      height: 100%;
-  }
-  img:hover{
-      cursor: pointer;
-  }
-  .browse .caption-text{
-      display: flex;
-      margin-top: 0.2rem;
-      justify-content: space-between;
-      font-weight: 500;   
-  }
-  .caption-text .price{
-      background-color:var(--tertiary-color);
-      color: var(--neutral-color);
-      padding: 2px 5px;
-      border-radius: 0.2rem;
-      font-size: 15px;
-  }
-  
-  /* Search section */
-  .search{
-      text-align: left;
-      margin: 1.2rem;
-      padding: 1.5rem;
-      border-radius: 0.5rem;
-      background: #ffffff;
-      border: none;
-  }
-  hr{
-      margin:-10px 0 1rem 0 ;
-      border: 0.5px solid #c5a56d4c;
-  }
-  .search-container{
-      padding: 0 0 10px 0;
-  }
-  .search-filter{
-      padding-bottom: 0.5rem;
-  }
-  .select-wrapper label{
-      font-size: smaller;
-      font-weight: 500;
-  }
-  .select-wrapper select{
-      width: 100%;
-      padding: 0.5rem; 
-      font-size: 1rem;
-      border-radius: 0.2rem;
-      background-color: var(--secondary-light);
-  }
-  .matches-btn{
-      width: 100%;
-      padding: 1rem;
-      font-size: 1rem;
-      font-weight: 600;
-      margin: 0.5rem 0;
-      background-color: #8f7342;
-      border: none;
-      border-radius: 0.2rem;
-      color: var(--neutral-color);
-  }
-  .matches-btn:hover{
-      cursor: pointer;
-  }
-  .matches-btn:active{
-      background-color: var(--tertiary-color);
-      transition: 0.3s;
-  }
-  
-  @media screen and (min-width:760px){
-      .hamburger-menu{
-          display: none;
-      }
-      .nav-home{
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          background-color: #ffffff;
-      }
-      .home-links{
-          display: flex !important;
-          justify-content: space-between;
-      }
-      .home-links a{
-          border-radius: 0.2rem;
-      }
-      .browse p{
-          font-size: 1.2rem;
-      }
-      .browse-btn{
-          width: 20%;
-      }
-      .filter-by{
-          display: flex;
-          justify-content: space-between;
-      }
-      .search{
-          margin: 0 10%;
-      }
-      .filter-by select{
-          width: 100%;
-          padding: 10px 8rem 10px 5px;
-      }
-      .matches-btn{
-          width: 20%;
-      }
-      .matches-container{
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-      }
-  }
+}
+
+body {
+    font-family: DM Sans;
+    color: var(--primary-color);
+    background-color: var(--secondary-light);
+}
+
+/* Navbar */
+.nav-home {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--neutral-color);
+    padding: 15px 30px;
+    width: 100%;
+}
+
+.nav-home a {
+    text-decoration: none;
+}
+
+.nav-home .logo {
+    font-weight: 700;
+    font-size: 24px;
+    padding: 5px;
+    border-radius: 0.2rem;
+    color: var(--primary-color);
+}
+
+.home-links {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.home-links a {
+    color: var(--primary-color);
+    text-decoration: none;
+    padding: 8px 12px;
+    transition: 0.3s;
+}
+
+.home-links a:hover {
+    background-color: var(--tertiary-color);
+    color: var(--neutral-color);
+    border-radius: 0.2rem;
+}
+
+/* Browse section */
+.find-ride {
+    margin-top: 0;
+    padding: 10px 0 0 0;
+    font-size: 40px;
+}
+
+p {
+    margin: 0 0 1rem 0;
+}
+
+.browse {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 1.2rem;
+    padding: 1rem 1.5rem;
+}
+
+.browse-btn {
+    margin-bottom: 15px;
+    width: 50%;
+    font-size: 15px;
+    padding: 0.8rem 0.5rem;
+    background-color: var(--primary-color);
+    color: var(--neutral-color);
+    font-weight: 500;
+    border: none;
+    border-radius: 0.4rem;
+    cursor: pointer;
+}
+
+.browse img {
+    width: 100%;
+    border-radius: 0.5rem;
+    height: 100%;
+}
+
+img:hover {
+    cursor: pointer;
+}
+
+.browse .caption-text {
+    display: flex;
+    margin-top: 0.2rem;
+    justify-content: space-between;
+    font-weight: 500;
+}
+
+.caption-text .price {
+    background-color: var(--tertiary-color);
+    color: var(--neutral-color);
+    padding: 2px 5px;
+    border-radius: 0.2rem;
+    font-size: 15px;
+}
+
+/* Search section */
+.search {
+    text-align: left;
+    margin: 1.2rem;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    background: #ffffff;
+    border: none;
+}
+
+hr {
+    margin: -10px 0 1rem 0;
+    border: 0.5px solid #c5a56d4c;
+}
+
+.search-container {
+    padding: 0 0 10px 0;
+}
+
+.search-filter {
+    padding-bottom: 0.5rem;
+}
+
+.select-wrapper label {
+    font-size: smaller;
+    font-weight: 500;
+}
+
+.select-wrapper select {
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 1rem;
+    border-radius: 0.2rem;
+    background-color: var(--secondary-light);
+}
+
+.matches-btn {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0.5rem 0;
+    background-color: #8f7342;
+    border: none;
+    border-radius: 0.2rem;
+    color: var(--neutral-color);
+}
+
+.matches-btn:hover {
+    cursor: pointer;
+}
+
+.matches-btn:active {
+    background-color: var(--tertiary-color);
+    transition: 0.3s;
+}
+
+/* Desktop layout */
+@media screen and (min-width: 760px) {
+
+    .browse p {
+        font-size: 1.2rem;
+    }
+
+    .browse-btn {
+        width: 20%;
+    }
+
+    .filter-by {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .search {
+        margin: 0 10%;
+    }
+
+    .filter-by select {
+        width: 100%;
+        padding: 10px 8rem 10px 5px;
+    }
+
+    .matches-btn {
+        width: 20%;
+    }
+
+    .matches-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+}
+
+/* Mobile layout */
+@media screen and (max-width: 600px) {
+
+    .nav-home {
+        flex-direction: column;
+        gap: 12px;
+        padding: 15px;
+    }
+
+    .home-links {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 5px;
+    }
+
+    .find-ride {
+        font-size: 28px;
+        text-align: center;
+    }
+
+    .browse-btn {
+        width: 100%;
+    }
+}

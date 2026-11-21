@@ -1,3 +1,4 @@
+
 * {
     margin: 0;
     padding: 0;
@@ -10,21 +11,43 @@ body {
     color: #222;
 }
 
-header {
-    background: #102d23;
-    color: white;
-    padding: 20px 8%;
+/* Navbar */
+.nav-home {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    background-color: var(--neutral-color);
+    padding: 15px 30px;
+    width: 100%;
 }
 
-header nav a {
-    color: white;
+.nav-home .logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--primary-color);
     text-decoration: none;
-    margin-left: 25px;
 }
 
+.home-links {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.home-links a {
+    color: var(--primary-color);
+    text-decoration: none;
+    padding: 8px 12px;
+    transition: 0.3s;
+}
+
+.home-links a:hover {
+    background-color: var(--tertiary-color);
+    color: var(--neutral-color);
+    border-radius: 5px;
+}
+
+/* Contact page */
 .contact-container {
     max-width: 900px;
     margin: 50px auto;
@@ -99,10 +122,18 @@ header nav a {
     border-radius: 5px;
 }
 
+/* Responsive design */
 @media (max-width: 600px) {
-    header {
+    .nav-home {
         flex-direction: column;
-        gap: 15px;
+        gap: 12px;
+        padding: 15px;
+    }
+
+    .home-links {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 5px;
     }
 
     .feedback-form {
