@@ -4,7 +4,7 @@ from werkzeug.utils import secure_filename
 
 from flask import Flask, render_template, redirect, url_for, session,flash, request
 
-from database import insert_vehicles, fetch_vehicle, fetch_vehicles, insert_vehicle_images, fetch_vehicle_images, insert_user, fetch_user, check_user, fetch_vehicle_options, search_vehicles, insert_feedback
+from database import insert_vehicles, fetch_vehicle, fetch_vehicles, insert_vehicle_images, fetch_vehicle_images, insert_user, fetch_user, check_user, fetch_vehicle_options, search_vehicles, insert_feedback, cur
 
 from flask_bcrypt import Bcrypt
 
@@ -17,8 +17,8 @@ app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USE_SSL'] = False
 
-app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME')
-app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
+app.config['MAIL_USERNAME'] = 'levy4tech@gmail.com'
+app.config['MAIL_PASSWORD'] = 'dhptacxxyoftcwao'
 app.config['MAIL_DEFAULT_SENDER'] = 'levy4tech@gmail.com'
 
 mail = Mail(app)
@@ -236,7 +236,7 @@ def register():
 
         try:
             new_user = (full_name, email, phone, hashed_password, role)
-            insert_user(new_user)
+            is_admin = insert_user(new_user)
 
             try:
                 msg = Message(
@@ -279,25 +279,125 @@ CarListings Team
 
 
 
-@app.route("/login", methods = ['GET', 'POST'])
+
+@app.route("/login", methods=['GET', 'POST'])
 def login():
+
     if request.method == 'POST':
-        email = request.form['email']
+
+        email = request.form['email'].strip().lower()
         password = request.form['pass']
-        
+
         user = check_user(email)
-        
+
         if not user:
-            flash("Please regsiter to be a user", "error")
+            flash("Please register to be a user", "error")
             return redirect(url_for('register'))
-        else:
-            if bcrypt.check_password_hash(user[4], password):
-                session['email'] = email
+
+        if bcrypt.check_password_hash(user[4], password):
+
+            # Check whether this user is an administrator
+            cur.execute(
+                "SELECT 1 FROM admins WHERE user_id = %s",
+                (user[0],)
+            )
+
+            admin = cur.fetchone()
+
+            # Clear previous session data
+            session.clear()
+
+            # Store logged-in user's information
+            session['user_id'] = user[0]
+            session['email'] = email
+
+            if admin:
+                session['is_admin'] = True
+
+                flash("Welcome, Administrator!", "success")
+                return redirect(url_for('admin_dashboard'))
+
+            else:
+                session['is_admin'] = False
+
                 flash("Logged in successfully", "success")
                 return redirect(url_for('home'))
-            else:
-                flash("Wrong password, Try again", "error")
-                return redirect(url_for('login'))
-    return render_template('login.html') 
+
+        else:
+            flash("Wrong password, Try again", "error")
+            return redirect(url_for('login'))
+
+    return render_template('login.html')
+
+# admin dashboard route
+
+@app.route('/admin')
+def admin_dashboard():
+
+    # Ensure the user is logged in
+    if 'user_id' not in session:
+        flash("Please log in first.", "error")
+        return redirect(url_for('login'))
+
+    # Verify admin privileges directly from the database
+    cur.execute(
+        "SELECT 1 FROM admins WHERE user_id = %s",
+        (session['user_id'],)
+    )
+
+    admin = cur.fetchone()
+
+    if not admin:
+        flash("Access denied. Administrators only.", "error")
+        return redirect(url_for('home'))
+
+    # Get total registered users
+    cur.execute("SELECT COUNT(*) FROM users")
+    total_users = cur.fetchone()[0]
+
+    # Get total vehicles posted
+    cur.execute("SELECT COUNT(*) FROM vehicles")
+    total_vehicles = cur.fetchone()[0]
+
+    # Get total administrators
+    cur.execute("SELECT COUNT(*) FROM admins")
+    total_admins = cur.fetchone()[0]
+
+    # Get the number of vehicles posted by each user
+    cur.execute("""
+        SELECT
+            u.user_id,
+            u.full_name,
+            u.email,
+            COUNT(v.vehicle_id) AS vehicles_posted
+        FROM users u
+        LEFT JOIN vehicles v ON u.user_id = v.seller_id
+        GROUP BY u.user_id, u.full_name, u.email
+        ORDER BY vehicles_posted DESC
+    """)
+
+    users = cur.fetchall()
+
+    return render_template(
+        'admin.html',
+        total_users=total_users,
+        total_vehicles=total_vehicles,
+        total_admins=total_admins,
+        users=users
+    )
+
+
+# logout route
+
+@app.route('/logout')
+def logout():
+
+    session.clear()
+
+    flash("You have been logged out successfully.", "success")
+
+    return redirect(url_for('login'))
+
+ 
         
 app.run(debug=True)

@@ -134,10 +134,55 @@ def fetch_purchases():
     purchases = cur.fetchall()
     return purchases
 
+# def insert_user(values):
+#     insert="insert into users(full_name, email, phone, password, role)values(%s, %s, %s, %s, %s)"
+#     cur.execute(insert,values)
+#     conn.commit()
+
+
+
 def insert_user(values):
-    insert="insert into users(full_name, email, phone, password, role)values(%s, %s, %s, %s, %s)"
-    cur.execute(insert,values)
-    conn.commit()
+
+    try:
+        # Prevent simultaneous registrations from both becoming admins
+        cur.execute("LOCK TABLE users IN EXCLUSIVE MODE")
+
+        # Check how many users already exist
+        cur.execute("SELECT COUNT(*) FROM users")
+        user_count = cur.fetchone()[0]
+
+        # Check whether an administrator already exists
+        cur.execute("SELECT COUNT(*) FROM admins")
+        admin_count = cur.fetchone()[0]
+
+        # Only the first registered user can become admin
+        is_admin = user_count == 0 and admin_count == 0
+
+        insert = """
+            INSERT INTO users
+            (full_name, email, phone, password, role)
+            VALUES (%s, %s, %s, %s, %s)
+            RETURNING user_id
+        """
+
+        cur.execute(insert, values)
+        user_id = cur.fetchone()[0]
+
+        if is_admin:
+            cur.execute(
+                "INSERT INTO admins (user_id) VALUES (%s)",
+                (user_id,)
+            )
+
+        conn.commit()
+
+        return is_admin
+
+    except Exception:
+        conn.rollback()
+        raise
+
+
 
 def fetch_user(user_id):
     query = "SELECT * FROM users WHERE user_id = %s;"
